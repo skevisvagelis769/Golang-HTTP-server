@@ -1,41 +1,44 @@
-let btn = document.getElementById("submit")
-let srch = document.getElementById("search")
+let submit = document.getElementById("submit")
 let input = document.getElementById("input")
+let search = document.getElementById("search")
 
-btn.addEventListener('click',()=>{
-    let userData ={
-    name: input.value
-    };
-    console.log(userData.name)
+submit.addEventListener('click',()=>{
+	console.log("clicked")
+	let userData={
+		name: input.value
+	}
+	fetch("http://localhost:8080/users",{
+		method:"POST",
+		headers:{
+			"Content-Type":"application:json"
+		},
+		body:JSON.stringify(userData)
+	})
+	.then(response => response.text())
+	.then(data=>{
+		console.log("Server Response is:",data)
+	})
+	.catch(error=>{
+		console.log("Error occured: ",error)
+	})
+})
 
-    fetch("http://localhost:8080/users",{
-        method: "POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body: JSON.stringify(userData)
-        
-    })
-    .then(response=>response.text())
-    .then(data=>{
-        console.log("Serber response:",data)
-        
-    })
-    .catch(error=>{
-        console.log("err",error)
-    })
+search.addEventListener('click',()=>{
+    //console.log("in serach ")
+    const list = document.getElementById("output")
+	console.log("clicked!!")
+	fetch(`http://localhost:8080/users/${input.value}`,{
+		method:"GET",
+		headers:{
+			"Content-Type":"application/json"
+		}
+	}).then(res=>res.json())
+	.then(users=>{
+		console.log(users.name)
+		list.textContent=`${users.name}`
+	}).catch(err=> {
+		list.textContent="Could not find!"
+		console.log("Error occured: ",err)
+	})
 })
-srch.addEventListener('click',()=>{
-    fetch(`http://localhost:8080/users/search/${input.value}`,{
-        method: "GET",
-        headers:{
-            "Content-Type":"application/json"
-        }
-    }).then(res => res.json())
-    .then(users=>{
-        console.log(users.name)
-        const list = document.getElementById("output")
-        list.textContent= `${users.name}`
-        
-    }).catch(err=> console.log("Error: ",err))
-})
+
