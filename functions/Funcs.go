@@ -8,6 +8,8 @@ import (
 	"sync"
 )
 
+// comment test
+
 var userCache = make(map[int]User) //Temporary user storage
 var cacheMutex sync.RWMutex        //mutex to block other threads from accessing the userCache during read or write operations since its global
 
