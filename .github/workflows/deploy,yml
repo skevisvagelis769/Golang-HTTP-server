@@ -1,0 +1,11 @@
+name: action
+on: 
+  push:
+    branches: 
+      - main 
+jobs:
+  build-and-deploy:
+      runs-on: self-hosted
+      steps:
+      - name: test 
+      run: echo Hello
