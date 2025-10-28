@@ -9,5 +9,15 @@ jobs:
       steps:
       - name: Checkout code 
         uses: actions/checkout@v4
-      - name: test 
-        run: echo Hello
+      - name: setup_go
+        uses: actions/setup-go@v5
+        with: 
+          go-version: "1.25"
+      - name: Setup_SSH
+        run: | 
+         mkdir -p ~/.ssh 
+         echo "${{secrets.SSH_KEY}}" > ~/.ssh/key && chmod 600 ~/.ssh/key
+      - name: Deploy_File
+        run: |
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/key -r 
+
